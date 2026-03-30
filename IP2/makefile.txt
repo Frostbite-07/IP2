@@ -1,8 +1,8 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++11
 
-DEMO_BIN = demo
-TEST_BIN = test
+DEMO_BIN = demo.exe
+TEST_BIN = test.exe
 
 all: help
 
@@ -25,15 +25,18 @@ build_demo: ArrayQueue.o demo.cpp
 	$(CXX) $(CXXFLAGS) demo.cpp ArrayQueue.o -o $(DEMO_BIN)
 
 run_demo: build_demo
-	./$(DEMO_BIN)
+	$(DEMO_BIN)
 
 build_test: ArrayQueue.o test.cpp
 	$(CXX) $(CXXFLAGS) test.cpp ArrayQueue.o -o $(TEST_BIN)
 
 run_test: build_test
-	./$(TEST_BIN)
+	$(TEST_BIN)
 
 clean:
-	rm -f *.o $(DEMO_BIN) $(TEST_BIN) log.txt
+	@if exist *.o del /q *.o
+	@if exist $(DEMO_BIN) del /q $(DEMO_BIN)
+	@if exist $(TEST_BIN) del /q $(TEST_BIN)
+	@if exist log.txt del /q log.txt
 
 rebuild: clean build_demo build_test
