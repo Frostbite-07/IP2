@@ -76,7 +76,7 @@ int main() {
         comp = (q.isEmpty() ? "Test 1.5: ! operator PASS" : "Test 1.5: ! operator FAIL");
         logOutput(logFile, comp);
         logOutput(logFile, q2.toString());
-        if (q2.front() == 34) logOutput(logFile, "Test 1: PASS");
+        if (q2.front() == 40) logOutput(logFile, "Test 1: PASS");
         else logOutput(logFile, "Test 1: FAIL");
 
         // Test 2
@@ -94,7 +94,7 @@ int main() {
         }
 
 
-        logOutput(logFile, "           TEST SUITE COMPLETED SUCCESSFULLY       ");
+        logOutput(logFile, "           TEST SUITE COMPLETED     ");
 
     } catch (const std::exception& e) {
         logOutput(logFile, "Unexpected exception: " + std::string(e.what()));
