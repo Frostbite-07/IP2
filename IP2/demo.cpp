@@ -27,6 +27,9 @@ int main() {
         ArrayQueue q3(2);
         q3 = q1;
 
+        q1.dequeue();
+        q1.dequeue();
+        q1.dequeue();
         std::cout << "\nAttempting an invalid dequeue\n";
         q1.dequeue(); // This will throw std::out_of_range
 

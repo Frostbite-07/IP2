@@ -172,7 +172,7 @@ namespace QueueNamespace {
          */
         class QueueCapacityException : public std::runtime_error {
         public:
-            explicit QueueCapacityException(int limit);
+            explicit QueueCapacityException();
         };
     };
 };

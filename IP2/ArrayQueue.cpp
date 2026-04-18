@@ -61,7 +61,7 @@ namespace QueueNamespace {
     void ArrayQueue::Inner::resize() {
         int newCapacity = capacity * 2;
         if (newCapacity > MAX_CAPACITY) {
-            throw ArrayQueue::QueueCapacityException(MAX_CAPACITY);
+            throw ArrayQueue::QueueCapacityException();
         }
         int* newArr = new int[newCapacity];
 
@@ -161,30 +161,60 @@ namespace QueueNamespace {
     }
     bool ArrayQueue::Inner::operator==(const Inner& other) const {
         if (count != other.count) return false;
-        for (int i = 0; i < count; i++)
-            if (arr[(frontIndex+i)%capacity] != other.arr[(other.frontIndex+i)%other.capacity])
+        for (int i = 0; i < count; i++) {
+            if (arr[(frontIndex+i)%capacity] != other.arr[(other.frontIndex+i)%other.capacity]) {
                 return false;
+            }
+        }
         return true;
     }
     bool ArrayQueue::Inner::operator!=(const Inner& other) const {
         return !(*this == other);
     }
     bool ArrayQueue::Inner::operator<(const Inner& other)  const {
-        return count < other.count;
+        if (count < other.count) {
+            return true;
+        }
+        if (count > other.count) {
+            return false;
+        }
+        for (int i = 0; i < count; i++) {
+            if (arr[(frontIndex+i)%capacity] < other.arr[(other.frontIndex+i)%other.capacity]) {
+                return true;
+            }
+            if (arr[(frontIndex+i)%capacity] > other.arr[(other.frontIndex+i)%other.capacity]) {
+                return false;
+            }
+        }
+        return false;
     }
     bool ArrayQueue::Inner::operator<=(const Inner& other) const {
-        return count <= other.count;
+        return (*this == other || *this < other);
     }
     bool ArrayQueue::Inner::operator>(const Inner& other)  const {
-        return count > other.count;
+        if (count > other.count) {
+            return true;
+        }
+        if (count < other.count) {
+            return false;
+        }
+        for (int i = 0; i < count; i++) {
+            if (arr[(frontIndex+i)%capacity] > other.arr[(other.frontIndex+i)%other.capacity]) {
+                return true;
+            }
+            if (arr[(frontIndex+i)%capacity] < other.arr[(other.frontIndex+i)%other.capacity]) {
+                return false;
+            }
+        }
+        return false;
     }
     bool ArrayQueue::Inner::operator>=(const Inner& other) const {
-        return count >= other.count;
+        return (*this == other || *this > other);
     }
     void ArrayQueue::Inner::operator!() {
         frontIndex = 0;
         rearIndex = -1;
-        count = 0;
+        count = 1;
     }
 
     void ArrayQueue::Inner::enqueue(const int& item) {
@@ -238,8 +268,8 @@ namespace QueueNamespace {
 
     class QueueCapacityException : public std::runtime_error {
     public:
-        explicit QueueCapacityException(int limit)
-            : std::runtime_error("Queue exceeded max allowed capacity of " + std::to_string(limit)) {};
+        explicit QueueCapacityException()
+            : std::runtime_error("Queue exceeded max allowed capacity") {};
     };
 
     ArrayQueue::ArrayQueue() {
@@ -339,7 +369,7 @@ namespace QueueNamespace {
         return impl->toString();
     }
 
-    ArrayQueue::QueueCapacityException::QueueCapacityException(int limit)
-        : std::runtime_error("Queue exceeded max allowed capacity of " + std::to_string(limit)) {
+    ArrayQueue::QueueCapacityException::QueueCapacityException()
+        : std::runtime_error("Queue exceeded max allowed capacity") {
     }
 };
